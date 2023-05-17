@@ -55,3 +55,16 @@ void setMotorRichting(double outputVal, int LVR, int LAR, int RVR, int RAR)
     Rvooruit(RVR, RAR);
   }
 }
+
+double mapDouble(double x, double inMin, double inMax, double outMin, double outMax) {
+  // Scale the input value to an integer range
+  int scaledX = (x - inMin) * 255 / (inMax - inMin);
+
+  // Map the scaled value to the output range
+  int mappedX = map(scaledX, 0, 255, 20, 255);
+
+  // Scale the mapped value back to a double range
+  double mappedDouble = (mappedX - 20) * (outMax - outMin) / (255 - 20) + outMin;
+
+  return mappedDouble;
+}
