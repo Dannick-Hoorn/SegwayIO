@@ -1,6 +1,6 @@
 #include <Arduino.h>
 #include <AutoPID.h>
-#include <EEPROM.h>
+
 #include "BTSegway.h"
 #include "MotorControlSegway.h"
 #include "MemorySegway.h"
@@ -32,7 +32,7 @@ double btDouble;
 String readString = "";
 
 // variabelen m.b.t. motoren
-double minSnelheid = 40;
+double minSnelheid;
 double deadZone = 0;
 
 // min-max output PID regelaar
@@ -72,9 +72,6 @@ void setup()
   // Seriele communicatie met baudrate van BT module
   Serial.begin(9600);
 
-  // Gemeten setpoint v.d. inclinometer
-  setPoint = 510;
-
 //haal variabelen op uit geheugen
 updateVars(KP, KI, KD, deadZone, setPoint, factor1, factor2, minSnelheid, aP, aI, aD, aDeadzone, aSetpoint, aFactor1, aFactor2, aMinSnelheid);
 
@@ -84,6 +81,7 @@ void loop()
 {
   // als data over bluetooth wordt gestuurd, ga uitlezen en aanpassen
   input = analogRead(INCL);
+
   if (Serial.available())
   {
     Bluetooth(btChar, btDouble, readString);
@@ -103,8 +101,8 @@ void loop()
   outputVal = abs(outputVal);
 
   // stuk code voor deadzone
-  int ERROR = abs(input - setPoint);
-  if (outputVal < minSnelheid && ERROR > deadZone)
+  double ERROR = abs(input - setPoint);
+  if (outputVal < minSnelheid /* && ERROR > deadZone*/)
   {
     outputVal = minSnelheid;
   }
@@ -116,20 +114,22 @@ void loop()
   pwmToMotor(outputVal, factor1, factor2, LPWM, RPWM);
 
   // misc prints voor debugging
- /*
-  Serial.print("Input = ");
+ 
+  Serial.print("Deadzone = ");
+  Serial.print(deadZone);
+  Serial.print(" Input = ");
   Serial.print(input);
   Serial.print(" Output = ");
   Serial.println(outputVal);
-  */
-
+  
+/*
   Serial.print(" KP = ");
   Serial.print(KP, 7);
   Serial.print(" KI = ");
   Serial.print(KI, 7);
   Serial.print(" KD = ");
   Serial.println(KD, 7);
-/*
+
   Serial.print("LVR = ");
   Serial.print(digitalRead(LVR));
   Serial.print("LAR = ");
