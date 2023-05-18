@@ -19,8 +19,9 @@ void pwmToMotor(double &outputVal, double &factor1, double &factor2, int LPWM, i
   {
     analogWrite(RPWM, outputVal * factor2);
   }
-}
+}//void pwmtomotor
 
+//voids ricting
 void Lachteruit(int LVR, int LAR)
 {
   digitalWrite(LVR, LOW);
@@ -40,7 +41,7 @@ void Rvooruit(int RVR, int RAR)
 {
   digitalWrite(RVR, HIGH);
   digitalWrite(RAR, LOW);
-}
+}//voids richting
 
 void setMotorRichting(double outputVal, int LVR, int LAR, int RVR, int RAR)
 {
@@ -54,14 +55,14 @@ void setMotorRichting(double outputVal, int LVR, int LAR, int RVR, int RAR)
     Lvooruit(LVR, LAR);
     Rvooruit(RVR, RAR);
   }
-}
+}//void setmotorrichting
 
 double mapDouble(double x, double inMin, double inMax, double outMin, double outMax) {
   // Scale the input value to an integer range
   int scaledX = (x - inMin) * 255 / (inMax - inMin);
 
   // Map the scaled value to the output range
-  int mappedX = map(scaledX, 0, 255, 20, 255);
+  int mappedX = map(scaledX, 0, 255, outMin, 255);
 
   // Scale the mapped value back to a double range
   double mappedDouble = (mappedX - 20) * (outMax - outMin) / (255 - 20) + outMin;

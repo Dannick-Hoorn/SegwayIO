@@ -50,7 +50,7 @@ void switchCase(char &btChar, double &btDouble, double &KP, double &KI, double &
     btChar = ' ';
     break;
   }
-}
+}//void switchcase
 
 void Bluetooth(char &btChar, double &btDouble, String &readString)
 {
@@ -68,4 +68,13 @@ void Bluetooth(char &btChar, double &btDouble, String &readString)
     btDouble = readString.toDouble();
     readString = ""; // reset string voor volgende ontvangst
   }
+}//void bluetooth
+
+void printPID(double P, double I, double D){
+  Serial.print("P = ");
+  Serial.print(P);
+  Serial.print(" I = ");
+  Serial.print(I, 7);
+  Serial.print(" D = ");
+  Serial.println(D, 5);
 }
