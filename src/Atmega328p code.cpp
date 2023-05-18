@@ -40,8 +40,9 @@ void runPID()
 {
   myPID.run();
   setMotorRichting(outputVal, LVR, LAR, RVR, RAR);
+
   // outputVal mappen van 0-255 naar 30-255 (omdat motoren pas bij 30 draaien)
-  double outputMapped = mapDouble(abs(outputVal), 0, 255, 25, 255);
+  double outputMapped = mapDouble(abs(outputVal), 0, 255, 30, 255);
 
   // stuk code voor deadzone
   if (abs(inputAVG - setPoint) < deadZone)
