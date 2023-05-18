@@ -1,7 +1,7 @@
 #pragma once
 #include "MemorySegway.h"
 
-void switchCase(char &btChar, double &btDouble, double &KP, double &KI, double &KD, double &deadZone, double &setPoint,
+void switchCase(double &inputAVG, char &btChar, double &btDouble, double &KP, double &KI, double &KD, double &deadZone, double &setPoint,
                 double &Factor1, double &Factor2, double &minSnelheid, int aP, int aI, int aD, int aDeadzone, int aSetpoint, int aFactor1, int aFactor2, int aMinSnelheid)
 {
   switch (btChar)
@@ -45,6 +45,10 @@ void switchCase(char &btChar, double &btDouble, double &KP, double &KI, double &
     storeDoubleEEPROM(aMinSnelheid, btDouble);
     btChar = ' ';
     break;
+  
+  case 'o':
+    Serial.println(inputAVG);
+    btChar = ' ';
 
   default:
     btChar = ' ';
@@ -78,3 +82,4 @@ void printPID(double P, double I, double D){
   Serial.print(" D = ");
   Serial.println(D, 5);
 }
+

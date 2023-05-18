@@ -42,7 +42,7 @@ void runPID()
   setMotorRichting(outputVal, LVR, LAR, RVR, RAR);
 
   // outputVal mappen van 0-255 naar 30-255 (omdat motoren pas bij 30 draaien)
-  double outputMapped = mapDouble(abs(outputVal), 0, 255, 30, 255);
+  double outputMapped = mapDouble(abs(outputVal), 0, 255, 25, 255);
 
   // stuk code voor deadzone
   if (abs(inputAVG - setPoint) < deadZone)
@@ -68,6 +68,8 @@ void callInAVGFunc()
 {
   InputAVGfunc(inputAVG);
 }
+
+
 
 // tickers declareren moet globaal want zowel in setup als in loop aangeroepen
 // ticker voor Inclinometer
@@ -115,7 +117,7 @@ void loop()
   {
     printPID(KP, KI, KD);
     Bluetooth(btChar, btDouble, readString);
-    switchCase(btChar, btDouble, KP, KI, KD, deadZone, setPoint, factor1, factor2, minSnelheid, aP, aI, aD, aDeadzone, aSetpoint, aFactor1, aFactor2, aMinSnelheid);
+    switchCase(inputAVG, btChar, btDouble, KP, KI, KD, deadZone, setPoint, factor1, factor2, minSnelheid, aP, aI, aD, aDeadzone, aSetpoint, aFactor1, aFactor2, aMinSnelheid);
     updateVars(KP, KI, KD, deadZone, setPoint, factor1, factor2, minSnelheid, aP, aI, aD, aDeadzone, aSetpoint, aFactor1, aFactor2, aMinSnelheid);
     printPID(KP, KI, KD);
     myPID.setGains(KP, KI, KD);
