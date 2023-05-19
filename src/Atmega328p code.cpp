@@ -69,8 +69,6 @@ void callInAVGFunc()
   InputAVGfunc(inputAVG);
 }
 
-
-
 // tickers declareren moet globaal want zowel in setup als in loop aangeroepen
 // ticker voor Inclinometer
 Ticker InclTicker(callInAVGFunc, 1, 0, MILLIS);
@@ -95,7 +93,6 @@ void setup()
 
   // pid setup functies
   myPID.setTimeStep(0);
-  // myPID.setBangBang(250, 250);
 
   // Seriele communicatie met baudrate van BT module
   Serial.begin(9600);
@@ -115,29 +112,13 @@ void loop()
   // als data over bluetooth wordt gestuurd, ga uitlezen en aanpassen
   if (Serial.available())
   {
-    printPID(KP, KI, KD);
     Bluetooth(btChar, btDouble, readString);
-    switchCase(inputAVG, btChar, btDouble, KP, KI, KD, deadZone, setPoint, factor1, factor2, minSnelheid, aP, aI, aD, aDeadzone, aSetpoint, aFactor1, aFactor2, aMinSnelheid);
+    switchCase(inputAVG, btChar, btDouble, aP, aI, aD, aDeadzone, aSetpoint, aFactor1, aFactor2, aMinSnelheid);
     updateVars(KP, KI, KD, deadZone, setPoint, factor1, factor2, minSnelheid, aP, aI, aD, aDeadzone, aSetpoint, aFactor1, aFactor2, aMinSnelheid);
-    printPID(KP, KI, KD);
     myPID.setGains(KP, KI, KD);
   }
 
   // update tickers en run functies indien nodig
   PIDTicker.update();
   InclTicker.update();
-
-  
-  // misc prints voor debugging
-   
-    /*
-    Serial.print("InputAVG: ");
-    Serial.print(inputAVG);
-    Serial.print(" Output = ");
-    Serial.print(outputMapped);
-    Serial.print("Deadzone = ");
-    Serial.print(deadZone);
-    Serial.print(" Input = ");
-    Serial.print(input);
-    */
 }

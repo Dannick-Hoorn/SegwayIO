@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include <avr/eeprom.h>
 
 // Define the EEPROM address
@@ -15,8 +14,6 @@ double readDoubleEEPROM(int address) {
   eeprom_read_block(&variable, (void *)(address), sizeof(variable));
   return variable;
 }
-
-
 
 void updateVars(double& KP, double& KI, double& KD, double& deadZone, double& setPoint, double& Factor1, double& Factor2, double& minSnelheid,
                 int aP, int aI, int aD, int aDeadzone, int aSetpoint, int aFactor1, int aFactor2, int aMinSnelheid){

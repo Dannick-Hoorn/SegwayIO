@@ -1,60 +1,123 @@
 #pragma once
 #include "MemorySegway.h"
 
-void switchCase(double &inputAVG, char &btChar, double &btDouble, double &KP, double &KI, double &KD, double &deadZone, double &setPoint,
-                double &Factor1, double &Factor2, double &minSnelheid, int aP, int aI, int aD, int aDeadzone, int aSetpoint, int aFactor1, int aFactor2, int aMinSnelheid)
+void printPID(double P, double I, double D){
+  Serial.print("P = ");
+  Serial.print(P);
+  Serial.print(" I = ");
+  Serial.print(I, 7);
+  Serial.print(" D = ");
+  Serial.println(D, 5);
+}
+
+void switchCase(double &inputAVG, char &btChar, double &btDouble, int aP, int aI, int aD, int aDeadzone, int aSetpoint, int aFactor1, int aFactor2, int aMinSnelheid)
 {
+  /*Gebruikte letters:
+  P, I, D: Waarden PID regelaar
+  Z: Deadzone
+  S: Setpoint
+  F: Factor1
+  G: Factor2
+  N: Minimale snelheid (PWM waarde) (((Variabele wordt niet gebruikt)))
+  O: Print input
+  A: Print PID waarden
+  */
+
   switch (btChar)
   {
   case 'p':
+    Serial.println("P - waarde");
+    Serial.print("Old: ");
+    Serial.println(readDoubleEEPROM(aP));
     storeDoubleEEPROM(aP, btDouble);
+    Serial.print("New: ");
+    Serial.println(readDoubleEEPROM(aP));
     btChar = ' ';
     break;
 
   case 'i':
+    Serial.println("I - waarde");
+    Serial.print("Old: ");
+    Serial.println(readDoubleEEPROM(aI), 7);
     storeDoubleEEPROM(aI, btDouble);
+    Serial.print("New: ");
+    Serial.println(readDoubleEEPROM(aI), 7);
     btChar = ' ';
     break;
 
   case 'd':
+    Serial.println("D - waarde");
+    Serial.print("Old: ");
+    Serial.println(readDoubleEEPROM(aD), 7);
     storeDoubleEEPROM(aD, btDouble);
+    Serial.print("New: ");
+    Serial.println(readDoubleEEPROM(aD), 7);
     btChar = ' ';
     break;
 
   case 'z':
+    Serial.println("Deadzone");
+    Serial.print("Old: ");
+    Serial.println(readDoubleEEPROM(aDeadzone));
     storeDoubleEEPROM(aDeadzone, btDouble);
+    Serial.print("New: ");
+    Serial.println(readDoubleEEPROM(aDeadzone));
     btChar = ' ';
     break;
 
   case 's':
+    Serial.println("Setpoint");
+    Serial.print("Old: ");
+    Serial.println(readDoubleEEPROM(aSetpoint));
     storeDoubleEEPROM(aSetpoint, btDouble);
+    Serial.print("New: ");
+    Serial.println(readDoubleEEPROM(aSetpoint));
     btChar = ' ';
     break;
 
   case 'f':
+    Serial.println("Factor1");
+    Serial.print("Old: ");
+    Serial.println(readDoubleEEPROM(aFactor1));
     storeDoubleEEPROM(aFactor1, btDouble);
+    Serial.print("New: ");
+    Serial.println(readDoubleEEPROM(aFactor1));
     btChar = ' ';
     break;
 
   case 'g':
+    Serial.println("Factor2");
+    Serial.print("Old: ");
+    Serial.println(readDoubleEEPROM(aFactor2));
     storeDoubleEEPROM(aFactor2, btDouble);
+    Serial.print("New: ");
+    Serial.println(readDoubleEEPROM(aFactor2));
     btChar = ' ';
     break;
 
   case 'n':
+    Serial.println("Minimale PWM waarde");
+    Serial.print("Old: ");
+    Serial.println(readDoubleEEPROM(aMinSnelheid));
     storeDoubleEEPROM(aMinSnelheid, btDouble);
+    Serial.print("New: ");
+    Serial.println(readDoubleEEPROM(aMinSnelheid));
     btChar = ' ';
     break;
-  
+
   case 'o':
     Serial.println(inputAVG);
     btChar = ' ';
+
+    case 'a':
+    printPID(readDoubleEEPROM(aP), readDoubleEEPROM(aI), readDoubleEEPROM(aD));
+    break;
 
   default:
     btChar = ' ';
     break;
   }
-}//void switchcase
+} // void switchcase
 
 void Bluetooth(char &btChar, double &btDouble, String &readString)
 {
@@ -72,14 +135,5 @@ void Bluetooth(char &btChar, double &btDouble, String &readString)
     btDouble = readString.toDouble();
     readString = ""; // reset string voor volgende ontvangst
   }
-}//void bluetooth
-
-void printPID(double P, double I, double D){
-  Serial.print("P = ");
-  Serial.print(P);
-  Serial.print(" I = ");
-  Serial.print(I, 7);
-  Serial.print(" D = ");
-  Serial.println(D, 5);
-}
+} // void bluetooth
 
