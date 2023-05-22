@@ -1,7 +1,8 @@
 #pragma once
 #include "MemorySegway.h"
 
-void printPID(double P, double I, double D){
+void printPID(double P, double I, double D)
+{
   Serial.print("P = ");
   Serial.print(P);
   Serial.print(" I = ");
@@ -21,6 +22,7 @@ void switchCase(double &inputAVG, char &btChar, double &btDouble, int aP, int aI
   N: Minimale snelheid (PWM waarde) (((Variabele wordt niet gebruikt)))
   O: Print input
   A: Print PID waarden
+  H: Help commandos
   */
 
   switch (btChar)
@@ -108,8 +110,21 @@ void switchCase(double &inputAVG, char &btChar, double &btDouble, int aP, int aI
   case 'o':
     Serial.println(inputAVG);
     btChar = ' ';
+    break;
 
-    case 'a':
+  case 'h':
+    Serial.println(" P, I, D: Waarden PID regelaar");
+    Serial.println("Z: Deadzone");
+    Serial.println("S: Setpoint");
+    Serial.println("F: Factor1");
+    Serial.println("G: Factor2");
+    Serial.println("N: Minimale snelheid (PWM waarde)");
+    Serial.println("O: Print input");
+    Serial.println("A: Print huidige PID waarden");
+    Serial.println("H: Help commandos");
+    break;
+
+  case 'a':
     printPID(readDoubleEEPROM(aP), readDoubleEEPROM(aI), readDoubleEEPROM(aD));
     break;
 
@@ -136,4 +151,3 @@ void Bluetooth(char &btChar, double &btDouble, String &readString)
     readString = ""; // reset string voor volgende ontvangst
   }
 } // void bluetooth
-
