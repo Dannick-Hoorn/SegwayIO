@@ -42,7 +42,7 @@ void runPID()
   setMotorRichting(outputVal, LVR, LAR, RVR, RAR);
 
   // outputVal mappen van 0-255 naar 30-255 (omdat motoren pas bij 30 draaien)
-  double outputMapped = mapDouble(abs(outputVal), 0, 255, 25, 255);
+  double outputMapped = outputVal + minSnelheid;
 
   // stuk code voor deadzone
   if (abs(inputAVG - setPoint) < deadZone)
@@ -77,6 +77,9 @@ Ticker PIDTicker(runPID, 1, 0, MILLIS);
 
 void setup()
 {
+
+  TCCR2B = TCCR2B & B11111000 | B00000011; //pwm PD3 naar 1000Hz
+  TCCR0B = TCCR0B & B11111000 | B00000011; //pwm PD5 freq naar 1000Hz
 
   // Logic pins
   pinMode(LVR, OUTPUT);
