@@ -42,7 +42,7 @@ void runPID()
   setMotorRichting(outputVal, LVR, LAR, RVR, RAR);
 
   // outputVal mappen van 0-255 naar 30-255 (omdat motoren pas bij 30 draaien)
-  double outputMapped = outputVal + minSnelheid;
+  double outputMapped = mapDouble(abs(outputVal), 0, 255, minSnelheid, 255);
 
   // stuk code voor deadzone
   if (abs(inputAVG - setPoint) < deadZone)
