@@ -7,6 +7,10 @@
 #include "MemorySegway.h"
 
 
+
+unsigned long StartTijd;
+
+
 // initialiseer pins
 #define LAR PD2  // links vooruit
 #define LVR PD4  // links achteruit
@@ -51,25 +55,31 @@ void runPID()
   }
 
   pwmToMotor(outputMapped, factor1, factor2, LPWM, RPWM);
+
+  unsigned long EindTijd = micros();
+  unsigned long Looptijd = EindTijd - StartTijd;
+  Serial.println(Looptijd, 10);
+  
+
 }//void runPID
 
 // funtie voor input ophalen en gemiddelde nemen (weer 2 functies want maker van Ticker.h verdient een nekschot)
 void InputAVGfunc(double &inputAVG)
 {
   //start timer
-  unsigned long StartTijd = micros();
+  /*unsigned long StartTijd = micros();*/
 
   double total = 0;
-  for (int i = 0; i < 100; i++)
+  for (int i = 0; i < 10; i++)
   {
     total += analogRead(INCL);
   }
-  inputAVG = total / 100;
+  inputAVG = total / 10;
   
   //stop timer
-  unsigned long EindTijd = micros();
+  /*unsigned long EindTijd = micros();
   unsigned long Looptijd = EindTijd - StartTijd;
-  Serial.println(Looptijd, 10);
+  Serial.println(Looptijd, 10);*/
 }
 
 void callInAVGFunc()
@@ -79,9 +89,9 @@ void callInAVGFunc()
 
 // tickers declareren moet globaal want zowel in setup als in loop aangeroepen
 // ticker voor Inclinometer
-Ticker InclTicker(callInAVGFunc, 1, 0, MILLIS);
+Ticker InclTicker(callInAVGFunc, 2, 0, MILLIS);
 // ticker voor PID algoritme
-Ticker PIDTicker(runPID, 1, 0, MILLIS);
+Ticker PIDTicker(runPID, 2, 0, MILLIS);
 
 void setup()
 {
@@ -120,6 +130,8 @@ void setup()
 
 void loop()
 {
+  StartTijd = micros();
+
   // als data over bluetooth wordt gestuurd, ga uitlezen en aanpassen
   if (Serial.available())
   {
@@ -130,6 +142,6 @@ void loop()
   }
 
   // update tickers en run functies indien nodig
-  PIDTicker.update();
   InclTicker.update();
+  PIDTicker.update();
 }
