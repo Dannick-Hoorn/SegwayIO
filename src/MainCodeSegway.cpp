@@ -42,7 +42,7 @@ void runPID()
   setMotorRichting(outputVal, LVR, LAR, RVR, RAR);
 
   // outputVal mappen van 0-255 naar 30-255 (omdat motoren pas bij 30 draaien)
-  double outputMapped = mapDouble(abs(outputVal), 0, 255, minSnelheid, 255);
+  double outputMapped = abs(outputVal)+minSnelheid;
 
   // stuk code voor deadzone
   if (abs(inputAVG - setPoint) < deadZone)
@@ -56,12 +56,20 @@ void runPID()
 // funtie voor input ophalen en gemiddelde nemen (weer 2 functies want maker van Ticker.h verdient een nekschot)
 void InputAVGfunc(double &inputAVG)
 {
+  //start timer
+  unsigned long StartTijd = micros();
+
   double total = 0;
   for (int i = 0; i < 100; i++)
   {
     total += analogRead(INCL);
   }
   inputAVG = total / 100;
+  
+  //stop timer
+  unsigned long EindTijd = micros();
+  unsigned long Looptijd = EindTijd - StartTijd;
+  Serial.println(Looptijd, 10);
 }
 
 void callInAVGFunc()
