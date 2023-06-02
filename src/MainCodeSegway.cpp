@@ -55,12 +55,6 @@ void runPID()
   }
 
   pwmToMotor(outputMapped, factor1, factor2, LPWM, RPWM);
-
-  unsigned long EindTijd = micros();
-  unsigned long Looptijd = EindTijd - StartTijd;
-  Serial.println(Looptijd, 10);
-  
-
 }//void runPID
 
 // funtie voor input ophalen en gemiddelde nemen (weer 2 functies want maker van Ticker.h verdient een nekschot)
@@ -70,12 +64,13 @@ void InputAVGfunc(double &inputAVG)
   /*unsigned long StartTijd = micros();*/
 
   double total = 0;
-  for (int i = 0; i < 10; i++)
+  for (int i = 0; i < 8; i++)
   {
     total += analogRead(INCL);
   }
-  inputAVG = total / 10;
-  
+  inputAVG = total / 8;
+  //8 inputs is sneller, schuifregister
+
   //stop timer
   /*unsigned long EindTijd = micros();
   unsigned long Looptijd = EindTijd - StartTijd;
@@ -89,9 +84,9 @@ void callInAVGFunc()
 
 // tickers declareren moet globaal want zowel in setup als in loop aangeroepen
 // ticker voor Inclinometer
-Ticker InclTicker(callInAVGFunc, 2, 0, MILLIS);
+Ticker InclTicker(callInAVGFunc, 1, 0, MILLIS);
 // ticker voor PID algoritme
-Ticker PIDTicker(runPID, 2, 0, MILLIS);
+Ticker PIDTicker(runPID, 1, 0, MILLIS);
 
 void setup()
 {
@@ -130,7 +125,6 @@ void setup()
 
 void loop()
 {
-  StartTijd = micros();
 
   // als data over bluetooth wordt gestuurd, ga uitlezen en aanpassen
   if (Serial.available())
