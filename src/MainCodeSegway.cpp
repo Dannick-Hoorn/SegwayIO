@@ -32,8 +32,8 @@ String readString = "";
 int aP = 0, aI = 8, aD = 16, aDeadzone = 24, aSetpoint = 32, aFactor1 = 40, aFactor2 = 48, aMinSnelheid = 56;
 
 // min-max output PID regelaar
-#define OUTPUT_MIN -255
-#define OUTPUT_MAX 255
+#define OUTPUT_MIN -160
+#define OUTPUT_MAX 160
 
 // Maak PID object aan
 AutoPID myPID(&inputAVG, &setPoint, &outputVal, OUTPUT_MIN, OUTPUT_MAX, KP, KI, KD);
