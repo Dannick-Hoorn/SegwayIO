@@ -1,5 +1,6 @@
 #pragma once
 
+#include "BTSegway.h"
 #include <avr/eeprom.h>
 
 // Define the EEPROM address
@@ -33,7 +34,7 @@ void updateVars(double& KP, double& KI, double& KD, double& deadZone, double& se
         setPoint = readDoubleEEPROM(aSetpoint) - HoekRijden; //checken of dit + of - moet zijn
         break;
       
-      case 'achteruit':
+      case 'biemerdebiem':
         setPoint = readDoubleEEPROM(aSetpoint) + HoekRijden; //checken of dit + of - moet zijn
         break;
 

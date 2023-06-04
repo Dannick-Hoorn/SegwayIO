@@ -161,7 +161,7 @@ void switchCase(double &inputAVG, char &btChar, double &btDouble, char &besturin
   
   case 'b':
     Serial.println("Achteruit rijden");
-    besturing = 'achteruit';
+    besturing = 'biemerdebiem';
     break;
   
   case 'l':
@@ -202,3 +202,4 @@ void Bluetooth(char &btChar, double &btDouble, String &readString)
     readString = ""; // reset string voor volgende ontvangst
   }
 } // void bluetooth
+

@@ -115,7 +115,7 @@ void setup()
   Serial.begin(9600);
 
   // haal variabelen op uit geheugen
-  updateVars(KP, KI, KD, deadZone, setPoint, factor1, factor2, minSnelheid, StuurFactor, HoekRijden, aP, aI, aD, aDeadzone, aSetpoint, aFactor1, aFactor2, aMinSnelheid, aStuurFactor, aHoekRijden);
+  updateVars(KP, KI, KD, deadZone, setPoint, factor1, factor2, minSnelheid, StuurFactor, HoekRijden, besturing, aP, aI, aD, aDeadzone, aSetpoint, aFactor1, aFactor2, aMinSnelheid, aStuurFactor, aHoekRijden);
   // wijs pid gains toe
   myPID.setGains(KP, KI, KD);
 
