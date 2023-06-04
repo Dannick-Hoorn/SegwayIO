@@ -21,7 +21,8 @@ unsigned long StartTijd;
 #define INCL PC5 // inclinometer
 
 // initisaliseer een aantal (globale) variabelen
-double pwm = 0, factor1, factor2, minSnelheid, deadZone, KP, KI, KD, input, setPoint, outputVal, inputAVG;
+double pwm = 0, factor1, factor2, minSnelheid, deadZone, KP, KI, KD, input, setPoint, outputVal, inputAVG, StuurFactor, HoekRijden;
+char besturing = ' ';
 
 // BT ontvangst variabelen
 char btChar;
@@ -29,11 +30,11 @@ double btDouble;
 String readString = "";
 
 // adressen voor EEPROM (Variabelen die aangepast kunnen worden)
-int aP = 0, aI = 8, aD = 16, aDeadzone = 24, aSetpoint = 32, aFactor1 = 40, aFactor2 = 48, aMinSnelheid = 56;
+int aP = 0, aI = 8, aD = 16, aDeadzone = 24, aSetpoint = 32, aFactor1 = 40, aFactor2 = 48, aMinSnelheid = 56, aStuurFactor = 64, aHoekRijden = 72;
 
 // min-max output PID regelaar
-#define OUTPUT_MIN -160
-#define OUTPUT_MAX 160
+#define OUTPUT_MIN -255
+#define OUTPUT_MAX 255
 
 // Maak PID object aan
 AutoPID myPID(&inputAVG, &setPoint, &outputVal, OUTPUT_MIN, OUTPUT_MAX, KP, KI, KD);
@@ -54,7 +55,7 @@ void runPID()
     outputMapped = 0;
   }
 
-  pwmToMotor(outputMapped, factor1, factor2, LPWM, RPWM);
+  pwmToMotor(outputMapped, factor1, factor2, StuurFactor, besturing, LPWM, RPWM);
 }//void runPID
 
 // funtie voor input ophalen en gemiddelde nemen (weer 2 functies want maker van Ticker.h verdient een nekschot)
@@ -114,7 +115,7 @@ void setup()
   Serial.begin(9600);
 
   // haal variabelen op uit geheugen
-  updateVars(KP, KI, KD, deadZone, setPoint, factor1, factor2, minSnelheid, aP, aI, aD, aDeadzone, aSetpoint, aFactor1, aFactor2, aMinSnelheid);
+  updateVars(KP, KI, KD, deadZone, setPoint, factor1, factor2, minSnelheid, StuurFactor, HoekRijden, aP, aI, aD, aDeadzone, aSetpoint, aFactor1, aFactor2, aMinSnelheid, aStuurFactor, aHoekRijden);
   // wijs pid gains toe
   myPID.setGains(KP, KI, KD);
 
@@ -130,8 +131,8 @@ void loop()
   if (Serial.available())
   {
     Bluetooth(btChar, btDouble, readString);
-    switchCase(inputAVG, btChar, btDouble, aP, aI, aD, aDeadzone, aSetpoint, aFactor1, aFactor2, aMinSnelheid);
-    updateVars(KP, KI, KD, deadZone, setPoint, factor1, factor2, minSnelheid, aP, aI, aD, aDeadzone, aSetpoint, aFactor1, aFactor2, aMinSnelheid);
+    switchCase(inputAVG, btChar, btDouble, besturing, aP, aI, aD, aDeadzone, aSetpoint, aFactor1, aFactor2, aMinSnelheid, aStuurFactor, aHoekRijden);
+    updateVars(KP, KI, KD, deadZone, setPoint, factor1, factor2, minSnelheid, StuurFactor, HoekRijden, besturing, aP, aI, aD, aDeadzone, aSetpoint, aFactor1, aFactor2, aMinSnelheid, aStuurFactor, aHoekRijden);
     myPID.setGains(KP, KI, KD);
   }
 

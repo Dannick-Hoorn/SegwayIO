@@ -11,7 +11,7 @@ void printPID(double P, double I, double D)
   Serial.println(D, 5);
 }
 
-void switchCase(double &inputAVG, char &btChar, double &btDouble, int aP, int aI, int aD, int aDeadzone, int aSetpoint, int aFactor1, int aFactor2, int aMinSnelheid)
+void switchCase(double &inputAVG, char &btChar, double &btDouble, char &besturing, int aP, int aI, int aD, int aDeadzone, int aSetpoint, int aFactor1, int aFactor2, int aMinSnelheid, int aStuurFactor, int aHoekRijden)
 {
   /*Gebruikte letters:
   P, I, D: Waarden PID regelaar
@@ -19,11 +19,15 @@ void switchCase(double &inputAVG, char &btChar, double &btDouble, int aP, int aI
   S: Setpoint
   F: Factor1
   G: Factor2
-  N: Minimale snelheid (PWM waarde) (((Variabele wordt niet gebruikt)))
+  N: Minimale snelheid (PWM waarde)
   O: Print input
   A: Print PID waarden
   H: Help commandos
   */
+
+  if (besturing == ' '){
+    besturing = 'stop';
+  }
 
   switch (btChar)
   {
@@ -107,6 +111,26 @@ void switchCase(double &inputAVG, char &btChar, double &btDouble, int aP, int aI
     btChar = ' ';
     break;
 
+    case 'r':
+    Serial.println("Hoek vooruit/achteruit rijden");
+    Serial.print("Old: ");
+    Serial.println(readDoubleEEPROM(aHoekRijden));
+    storeDoubleEEPROM(aHoekRijden, btDouble);
+    Serial.print("New: ");
+    Serial.println(readDoubleEEPROM(aHoekRijden));
+    btChar = ' ';
+    break;
+
+    case 'k':
+    Serial.println("Stuur Factor");
+    Serial.print("Old: ");
+    Serial.println(readDoubleEEPROM(aStuurFactor));
+    storeDoubleEEPROM(aStuurFactor, btDouble);
+    Serial.print("New: ");
+    Serial.println(readDoubleEEPROM(aStuurFactor));
+    btChar = ' ';
+    break;
+
   case 'o':
     Serial.println(inputAVG);
     btChar = ' ';
@@ -119,6 +143,8 @@ void switchCase(double &inputAVG, char &btChar, double &btDouble, int aP, int aI
     Serial.println("F: Factor1");
     Serial.println("G: Factor2");
     Serial.println("N: Minimale snelheid (PWM waarde)");
+    Serial.println("R: Hoek vooruit/achteruit rijden");
+    Serial.println("K: Stuur Factor");
     Serial.println("O: Print input");
     Serial.println("A: Print huidige PID waarden");
     Serial.println("H: Help commandos");
@@ -126,6 +152,31 @@ void switchCase(double &inputAVG, char &btChar, double &btDouble, int aP, int aI
 
   case 'a':
     printPID(readDoubleEEPROM(aP), readDoubleEEPROM(aI), readDoubleEEPROM(aD));
+    break;
+
+  case 'j':
+    Serial.println("Vooruit rijden");
+    besturing = 'vooruit';
+    break;
+  
+  case 'b':
+    Serial.println("Achteruit rijden");
+    besturing = 'achteruit';
+    break;
+  
+  case 'l':
+    Serial.println("Rechts");
+    besturing = 'rechts';
+    break;
+
+  case 'e':
+    Serial.println("Links");
+    besturing = 'links';
+    break;
+
+  case 'c':
+    Serial.println("Stop");
+    besturing = 'stop';
     break;
 
   default:

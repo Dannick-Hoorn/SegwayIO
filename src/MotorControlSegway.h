@@ -1,23 +1,67 @@
 #pragma once
 
-void pwmToMotor(double &outputVal, double &factor1, double &factor2, int LPWM, int RPWM)
+void pwmToMotor(double &outputVal, double &factor1, double &factor2, double &StuurFactor, char &besturing, int LPWM, int RPWM)
 {
-  if (outputVal * factor1 > 255)
-  {
-    analogWrite(LPWM, 255);
-  }
-  else
-  {
-    analogWrite(LPWM, outputVal * factor1);
-  }
+  switch (besturing){
+    case 'rechts':
+      if (outputVal * factor1 > 255)
+      {
+        analogWrite(LPWM, 255);
+      }
+      else
+      {
+        analogWrite(LPWM, outputVal * factor1);
+      }
 
-  if (outputVal * factor2 > 255)
-  {
-    analogWrite(RPWM, 255);
-  }
-  else
-  {
-    analogWrite(RPWM, outputVal * factor2);
+      if (outputVal * factor2 * StuurFactor > 255)
+      {
+        analogWrite(RPWM, 255);
+      }
+      else
+      {
+        analogWrite(RPWM, outputVal * factor2 * StuurFactor);
+      }
+      break;
+    
+    case 'links':
+      if (outputVal * factor1 * StuurFactor > 255)
+      {
+        analogWrite(LPWM, 255);
+      }
+      else
+      {
+        analogWrite(LPWM, outputVal * factor1 * StuurFactor);
+      }
+
+      if (outputVal * factor2 > 255)
+      {
+        analogWrite(RPWM, 255);
+      }
+      else
+      {
+        analogWrite(RPWM, outputVal * factor2);
+      }
+      break;
+    
+    default:
+      if (outputVal * factor1 > 255)
+      {
+        analogWrite(LPWM, 255);
+      }
+      else
+      {
+        analogWrite(LPWM, outputVal * factor1);
+      }
+
+      if (outputVal * factor2 > 255)
+      {
+        analogWrite(RPWM, 255);
+      }
+      else
+      {
+        analogWrite(RPWM, outputVal * factor2);
+      }
+      break;
   }
 }//void pwmtomotor
 
