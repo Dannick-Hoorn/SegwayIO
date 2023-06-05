@@ -3,7 +3,7 @@
 void pwmToMotor(double &outputVal, double &factor1, double &factor2, double &StuurFactor, char &besturing, int LPWM, int RPWM)
 {
   switch (besturing){
-    case 'rechts':
+    case 'r':
       if (outputVal * factor1 > 255)
       {
         analogWrite(LPWM, 255);
@@ -23,7 +23,7 @@ void pwmToMotor(double &outputVal, double &factor1, double &factor2, double &Stu
       }
       break;
     
-    case 'links':
+    case 'l':
       if (outputVal * factor1 * StuurFactor > 255)
       {
         analogWrite(LPWM, 255);

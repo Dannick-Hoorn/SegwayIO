@@ -26,7 +26,7 @@ void switchCase(double &inputAVG, char &btChar, double &btDouble, char &besturin
   */
 
   if (besturing == ' '){
-    besturing = 'stop';
+    besturing = 's';
   }
 
   switch (btChar)
@@ -156,27 +156,27 @@ void switchCase(double &inputAVG, char &btChar, double &btDouble, char &besturin
 
   case 'j':
     Serial.println("Vooruit rijden");
-    besturing = 'vooruit';
+    besturing = 'v';
     break;
   
   case 'b':
     Serial.println("Achteruit rijden");
-    besturing = 'biemerdebiem';
+    besturing = 'a';
     break;
   
   case 'l':
     Serial.println("Rechts");
-    besturing = 'rechts';
+    besturing = 'r';
     break;
 
   case 'e':
     Serial.println("Links");
-    besturing = 'links';
+    besturing = 'l';
     break;
 
   case 'c':
     Serial.println("Stop");
-    besturing = 'stop';
+    besturing = 's';
     break;
 
   default:
