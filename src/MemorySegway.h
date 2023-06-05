@@ -16,7 +16,7 @@ double readDoubleEEPROM(int address) {
   return variable;
 }
 
-void updateVars(double& KP, double& KI, double& KD, double& deadZone, double& setPoint, double& Factor1, double& Factor2, double& minSnelheid, double& StuurFactor, double& Hoekrijden, char& besturing,
+void updateVars(double& KP, double& KI, double& KD, double& deadZone, double& setPoint, double& setPoint2, double& Factor1, double& Factor2, double& minSnelheid, double& StuurFactor, double& Hoekrijden, char& besturing,
                 int aP, int aI, int aD, int aDeadzone, int aSetpoint, int aFactor1, int aFactor2, int aMinSnelheid, int aStuurFactor, int aHoekRijden){
     KP = readDoubleEEPROM(aP);
     KI = readDoubleEEPROM(aI);
@@ -27,6 +27,7 @@ void updateVars(double& KP, double& KI, double& KD, double& deadZone, double& se
     minSnelheid = readDoubleEEPROM(aMinSnelheid);
     StuurFactor = readDoubleEEPROM(aStuurFactor);
     HoekRijden = readDoubleEEPROM(aHoekRijden);
+    setPoint2 = readDoubleEEPROM(aSetpoint);
 
 
     switch(besturing){

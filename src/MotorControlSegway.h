@@ -87,9 +87,9 @@ void Rvooruit(int RVR, int RAR)
   digitalWrite(RAR, LOW);
 }//voids richting
 
-void setMotorRichting(double outputVal, int LVR, int LAR, int RVR, int RAR)
+void setMotorRichting(double setPoint2, double inputAVG, int LVR, int LAR, int RVR, int RAR)
 {
-  if (outputVal <= 0)
+  if (inputAVG < setPoint2)
   {
     Lachteruit(LVR, LAR);
     Rachteruit(RVR, RAR);

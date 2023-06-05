@@ -21,7 +21,7 @@ unsigned long StartTijd;
 #define INCL PC5 // inclinometer
 
 // initisaliseer een aantal (globale) variabelen
-double pwm = 0, factor1, factor2, minSnelheid, deadZone, KP, KI, KD, input, setPoint, outputVal, inputAVG, StuurFactor, HoekRijden;
+double pwm = 0, factor1, factor2, minSnelheid, deadZone, KP, KI, KD, input, setPoint, setPoint2, outputVal, inputAVG, StuurFactor, HoekRijden;
 char besturing = ' ';
 
 // BT ontvangst variabelen
@@ -44,7 +44,7 @@ AutoPID myPID(&inputAVG, &setPoint, &outputVal, OUTPUT_MIN, OUTPUT_MAX, KP, KI, 
 void runPID()
 {
   myPID.run();
-  setMotorRichting(outputVal, LVR, LAR, RVR, RAR);
+  setMotorRichting(setPoint2, inputAVG, LVR, LAR, RVR, RAR);
 
   // outputVal mappen van 0-255 naar 30-255 (omdat motoren pas bij 30 draaien)
   double outputMapped = abs(outputVal)+minSnelheid;
@@ -115,7 +115,7 @@ void setup()
   Serial.begin(9600);
 
   // haal variabelen op uit geheugen
-  updateVars(KP, KI, KD, deadZone, setPoint, factor1, factor2, minSnelheid, StuurFactor, HoekRijden, besturing, aP, aI, aD, aDeadzone, aSetpoint, aFactor1, aFactor2, aMinSnelheid, aStuurFactor, aHoekRijden);
+  updateVars(KP, KI, KD, deadZone, setPoint, setPoint2, factor1, factor2, minSnelheid, StuurFactor, HoekRijden, besturing, aP, aI, aD, aDeadzone, aSetpoint, aFactor1, aFactor2, aMinSnelheid, aStuurFactor, aHoekRijden);
   // wijs pid gains toe
   myPID.setGains(KP, KI, KD);
 
@@ -132,7 +132,7 @@ void loop()
   {
     Bluetooth(btChar, btDouble, readString);
     switchCase(inputAVG, btChar, btDouble, besturing, aP, aI, aD, aDeadzone, aSetpoint, aFactor1, aFactor2, aMinSnelheid, aStuurFactor, aHoekRijden);
-    updateVars(KP, KI, KD, deadZone, setPoint, factor1, factor2, minSnelheid, StuurFactor, HoekRijden, besturing, aP, aI, aD, aDeadzone, aSetpoint, aFactor1, aFactor2, aMinSnelheid, aStuurFactor, aHoekRijden);
+    updateVars(KP, KI, KD, deadZone, setPoint, setPoint2, factor1, factor2, minSnelheid, StuurFactor, HoekRijden, besturing, aP, aI, aD, aDeadzone, aSetpoint, aFactor1, aFactor2, aMinSnelheid, aStuurFactor, aHoekRijden);
     myPID.setGains(KP, KI, KD);
   }
 
