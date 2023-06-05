@@ -26,16 +26,16 @@ void updateVars(double& KP, double& KI, double& KD, double& deadZone, double& se
     Factor2 = readDoubleEEPROM(aFactor2);
     minSnelheid = readDoubleEEPROM(aMinSnelheid);
     StuurFactor = readDoubleEEPROM(aStuurFactor);
-    HoekRijden = readDoubleEEPROM(aHoekRijden);
+    Hoekrijden = readDoubleEEPROM(aHoekRijden);
 
 
     switch(besturing){
       case 'vooruit':
-        setPoint = readDoubleEEPROM(aSetpoint) - HoekRijden; //checken of dit + of - moet zijn
+        setPoint = readDoubleEEPROM(aSetpoint) - Hoekrijden; //checken of dit + of - moet zijn
         break;
       
-      case 'biemerdebiem':
-        setPoint = readDoubleEEPROM(aSetpoint) + HoekRijden; //checken of dit + of - moet zijn
+      case 'biemerdebiem': //naam achteruit mocht niet
+        setPoint = readDoubleEEPROM(aSetpoint) + Hoekrijden; //checken of dit + of - moet zijn
         break;
 
       default:
