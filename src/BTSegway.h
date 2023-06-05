@@ -147,6 +147,11 @@ void switchCase(double &inputAVG, char &btChar, double &btDouble, char &besturin
     Serial.println("K: Stuur Factor");
     Serial.println("O: Print input");
     Serial.println("A: Print huidige PID waarden");
+    Serial.println("J: Vooruit rijden");
+    Serial.println("B: Achteruit rijden");
+    Serial.println("L: Rechts");
+    Serial.println("E: Links");
+    Serial.println("C: Stop");
     Serial.println("H: Help commandos");
     break;
 
