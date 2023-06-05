@@ -1,6 +1,6 @@
 #pragma once
 
-void pwmToMotor(double &outputVal, double &factor1, double &factor2, double &StuurFactor, char &besturing, int LPWM, int RPWM)
+void pwmToMotor(double &outputVal, double &factor1, double &factor2, double &StuurFactor, char &besturing, char &rijden, int LPWM, int RPWM)
 {
   switch (besturing){
     case 'r':
@@ -21,6 +21,7 @@ void pwmToMotor(double &outputVal, double &factor1, double &factor2, double &Stu
       {
         analogWrite(RPWM, outputVal * factor2 * StuurFactor);
       }
+      rijden = 'v';
       break;
     
     case 'l':
@@ -41,6 +42,7 @@ void pwmToMotor(double &outputVal, double &factor1, double &factor2, double &Stu
       {
         analogWrite(RPWM, outputVal * factor2);
       }
+      rijden = 'v';
       break;
     
     default:

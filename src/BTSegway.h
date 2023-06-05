@@ -11,7 +11,7 @@ void printPID(double P, double I, double D)
   Serial.println(D, 5);
 }
 
-void switchCase(double &inputAVG, char &btChar, double &btDouble, char &besturing, int aP, int aI, int aD, int aDeadzone, int aSetpoint, int aFactor1, int aFactor2, int aMinSnelheid, int aStuurFactor, int aHoekRijden)
+void switchCase(double &inputAVG, char &btChar, double &btDouble, char &besturing, char &rijden, int aP, int aI, int aD, int aDeadzone, int aSetpoint, int aFactor1, int aFactor2, int aMinSnelheid, int aStuurFactor, int aHoekRijden)
 {
   /*Gebruikte letters:
   P, I, D: Waarden PID regelaar
@@ -156,12 +156,12 @@ void switchCase(double &inputAVG, char &btChar, double &btDouble, char &besturin
 
   case 'j':
     Serial.println("Vooruit rijden");
-    besturing = 'v';
+    rijden = 'v';
     break;
   
   case 'b':
     Serial.println("Achteruit rijden");
-    besturing = 'a';
+    rijden = 'a';
     break;
   
   case 'l':
@@ -177,6 +177,7 @@ void switchCase(double &inputAVG, char &btChar, double &btDouble, char &besturin
   case 'c':
     Serial.println("Stop");
     besturing = 's';
+    rijden = 's';
     break;
 
   default:

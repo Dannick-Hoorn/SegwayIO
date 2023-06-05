@@ -22,7 +22,7 @@ unsigned long StartTijd;
 
 // initisaliseer een aantal (globale) variabelen
 double pwm = 0, factor1, factor2, minSnelheid, deadZone, KP, KI, KD, input, setPoint, outputVal, inputAVG, StuurFactor, HoekRijden;
-char besturing = ' ';
+char besturing = ' ', rijden = ' ';
 
 // BT ontvangst variabelen
 char btChar;
@@ -55,7 +55,7 @@ void runPID()
     outputMapped = 0;
   }
 
-  pwmToMotor(outputMapped, factor1, factor2, StuurFactor, besturing, LPWM, RPWM);
+  pwmToMotor(outputMapped, factor1, factor2, StuurFactor, besturing, rijden, LPWM, RPWM);
 }//void runPID
 
 // funtie voor input ophalen en gemiddelde nemen (weer 2 functies want maker van Ticker.h verdient een nekschot)
@@ -115,7 +115,7 @@ void setup()
   Serial.begin(9600);
 
   // haal variabelen op uit geheugen
-  updateVars(KP, KI, KD, deadZone, setPoint, factor1, factor2, minSnelheid, StuurFactor, HoekRijden, besturing, aP, aI, aD, aDeadzone, aSetpoint, aFactor1, aFactor2, aMinSnelheid, aStuurFactor, aHoekRijden);
+  updateVars(KP, KI, KD, deadZone, setPoint, factor1, factor2, minSnelheid, StuurFactor, HoekRijden, besturing, rijden, aP, aI, aD, aDeadzone, aSetpoint, aFactor1, aFactor2, aMinSnelheid, aStuurFactor, aHoekRijden);
   // wijs pid gains toe
   myPID.setGains(KP, KI, KD);
 
@@ -131,8 +131,8 @@ void loop()
   if (Serial.available())
   {
     Bluetooth(btChar, btDouble, readString);
-    switchCase(inputAVG, btChar, btDouble, besturing, aP, aI, aD, aDeadzone, aSetpoint, aFactor1, aFactor2, aMinSnelheid, aStuurFactor, aHoekRijden);
-    updateVars(KP, KI, KD, deadZone, setPoint, factor1, factor2, minSnelheid, StuurFactor, HoekRijden, besturing, aP, aI, aD, aDeadzone, aSetpoint, aFactor1, aFactor2, aMinSnelheid, aStuurFactor, aHoekRijden);
+    switchCase(inputAVG, btChar, btDouble, besturing, rijden, aP, aI, aD, aDeadzone, aSetpoint, aFactor1, aFactor2, aMinSnelheid, aStuurFactor, aHoekRijden);
+    updateVars(KP, KI, KD, deadZone, setPoint, factor1, factor2, minSnelheid, StuurFactor, HoekRijden, besturing, rijden, aP, aI, aD, aDeadzone, aSetpoint, aFactor1, aFactor2, aMinSnelheid, aStuurFactor, aHoekRijden);
     myPID.setGains(KP, KI, KD);
   }
 
