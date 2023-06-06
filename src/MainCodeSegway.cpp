@@ -24,6 +24,7 @@ unsigned long StartTijd;
 double pwm = 0, factor1, factor2, minSnelheid, deadZone, KP, KI, KD, input, setPoint, outputVal, inputAVG, StuurFactor, HoekRijden;
 char besturing = ' ', rijden = ' ';
 
+
 // BT ontvangst variabelen
 char btChar;
 double btDouble;
